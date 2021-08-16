@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   //[a,b]가 저장됨 
-  let [title] = useState(['남자 코트 추천','강남 우동 맛집','헬창 점심 메뉴 추천']);
+  let [title,titleSet] = useState(['남자 코트 추천','강남 우동 맛집','헬창 점심 메뉴 추천']);
   let [listIdx,listIdxSet] = useState(0);
   let [likeCount,likeSet] = useState([0,0,0]);
   let [modal,modalSet] = useState(false);
@@ -29,6 +29,17 @@ function App() {
     return arr;
   }
 
+  var 게시글작성 = post =>{
+    var newTitle = [...title];
+    var newLike = [...likeCount];
+  
+    newTitle.unshift(post);
+    newLike.unshift(0);
+    
+    titleSet(newTitle);
+    likeSet(newLike);
+  }
+  
 
   // function 제목바꾸기(){
   //   var newArr = [...title];
@@ -57,7 +68,12 @@ function App() {
       {/* {input}
       <input onChange={(e)=>{inputSet(e.target.value)}}></input> */}
 
+      <div className="publish">
+        <input onChange={(e)=>{inputSet(e.target.value)}}></input>
+        <button onClick={()=>게시글작성(input)}>저장</button>
+      </div>
 
+      <Profile></Profile>
 
       {
         modal?<Modal title={title} idx={listIdx}></Modal>:null
@@ -69,6 +85,7 @@ function App() {
   );
 }
 
+//새로운 React 문법 
 function Modal(props){
   return (
     <div className="modal">
@@ -77,6 +94,28 @@ function Modal(props){
         <p>상세내용</p>
     </div>
   )
+}
+
+//옛날 React 문법 
+class Profile extends React.Component{
+  constructor(){
+    super();
+    this.state = {name:'kim',age:30};
+  }
+
+  changeName=()=>{
+    this.setState({name:'Park'})
+  }
+
+  render(){
+    return (
+      <div>
+        <h3>프로필입니다</h3>
+        <p>저는 {this.state.name}입니다</p>
+        <button onClick={this.changeName}>버튼</button>
+      </div>
+    )
+  }
 }
 
 export default App;
